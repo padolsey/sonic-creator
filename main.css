@@ -2,42 +2,56 @@ html, body {
 	margin: 0;
 	padding: 0;
 	font: .9em Helvetica, Arial, sans-serif;
-	background: #FFF url(load.gif) no-repeat center;
+	background: #272822 url(load.gif) no-repeat center;
+	color: #FFF;
 	height: 100%;
 	overflow: hidden;
 }
 
 a {
 	font-weight: 700;
+	color: #A6E22E;
+	text-decoration: none;
+}
+
+a:hover, a:focus {
+	text-decoration: underline;
 }
 
 h1, h2 {
-	margin: 0;
 	padding: .4em;
-	margin: .6em 0 ;
-	background: #EEE;
-	border-bottom: 1px solid #DDD;
+	margin: .6em -.6em;
+	background: #2f3129;
+	border-bottom: 2px solid #A6E22E;
 }
 
+h1 { margin-top: 0; }
+
 #editor, #preview {
-	background: #FFF;
+	background: #272822;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
 	float: left;
 	margin: 0;
-	border: 3px solid #CCC;
+	border: 3px solid #2f3129;
 	width: 50%;
 	height: 100%;
 	overflow: auto;
 }
 
 img, canvas  {
+	outline: 1px solid #A6E22E;
+	border: 1px solid #272822;
 	box-shadow: 0 0 8px #CCC;
 	-moz-box-shadow: 0 0 8px #CCC;
 	-webkit-box-shadow: 0 0 8px #CCC;
 	-ms-box-shadow: 0 0 8px #CCC;
+}
+
+canvas {
+	cursor: pointer;
 }
 
 #input {
@@ -46,6 +60,10 @@ img, canvas  {
 	position: relative;
 }
 
+#editor .ace_editor .ace_sb {
+	overflow-y: auto;
+}
+
 #preview  {
-	padding: 20px;
+	padding: 1.5em 2em;
 }

@@ -14,17 +14,18 @@
 	</head>
 	<body>
 
-		<div id="editor"><div id="input">{
+		<div id="editor"><div id="input">new Sonic({
 			
 	width: 100,
 	height: 100,
 
-	stepsPerFrame: 3,		// best between 1 and 5
-	trailLength: .9,		 // between 0 and 1
-	pointDistance: .02,
+	stepsPerFrame: 3,    // best between 1 and 5
+	trailLength: 0.9,    // between 0 and 1
+	pointDistance: 0.02, // best between 0.01 and 0.05
 	fps: 20,
 
-	fillColor: '#FF5900',
+	background: '#272822',
+	fillColor: '#66D9EF',
 
 	path: [
 		['arc', 50, 50, 30, 0, 360]
@@ -52,7 +53,7 @@
 
 	}
 
-}</div></div>
+});</div></div>
 
 		<div id="preview">
 			<h1>Sonic Creator</h1>
@@ -61,11 +62,11 @@
 				<li><a target="_blank" href="http://padolsey.net/p/Sonic/repo/demo/demo.html">Some examples &amp; inspiration here</a>
 				<li><a target="_blank" href="https://github.com/padolsey/Sonic/blob/master/README.md">Sonic Readme</a><br>
 			</ul>
-			<h2>Sonic Canvas</h2>
+			<h2>Sonic Canvas:</h2>
 			<p><small>Note: First run-through of frames will be slower</small></p>
 			<div id="sc"></div>
 			<h2>Generated GIF:</h2>
-			<p>Limited to ~16 FPS, as per <a target="_blank" href="http://www.stykz.net/support/help/lessons/About_the_Animated_GIF_Format.php">these guidelines</a>.</p>
+			<p>Adjusted to a maximum of ~16 FPS, as per <a target="_blank" href="http://www.stykz.net/support/help/lessons/About_the_Animated_GIF_Format.php">these guidelines</a>.</p>
 			<div id="gif"></div>
 			<p><small>Note: You'll probably want to compress that GIF.</small></p>
 		</div>
@@ -74,11 +75,21 @@
 
 		(function() {
 
+			window.Sonic = (function(RealSonic) {
+				return function(conf) {
+					conf.convert = true;
+					conf.background = conf.background || '#FFF';
+					// Save instance to local var
+					return sonic = new RealSonic(conf);
+				};
+			}(Sonic));
+
 			var sonic;
 			var sc = document.getElementById('sc');
 			var gif = document.getElementById('gif');
 			var inputEditor = ace.edit('input');
 			inputEditor.setTheme('ace/theme/github');
+			inputEditor.setTheme("ace/theme/monokai");
 			var inputSession = inputEditor.getSession();
 			inputSession.setMode("ace/mode/javascript");
 			inputSession.on('change', debounce(update, 400));
@@ -91,12 +102,19 @@
 					sonic.stop();
 					sc.innerHTML = '';
 					gif.innerHTML = '';
+					sonic = null;
 				}
 
-				var conf = eval('(' + inputSession.getValue() + ')');
-				conf.convert = true;
-				conf.background = conf.background || '#FFF';
-				sonic = new Sonic(conf);
+				eval(inputSession.getValue());
+
+				if (!sonic) {
+					throw new Error('Invalid input, no Sonic instance produced.');
+				}
+
+				sonic.canvas.title = 'Click to pause';
+				sonic.canvas.onclick = function() {
+					sonic.stopped ? sonic.play() : sonic.stop();
+				};
 
 				sc.appendChild(sonic.canvas);	
 				gif.appendChild(sonic.img);
