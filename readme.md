@@ -1,1 +1,1 @@
-[See the live site](//padolsey.github.com/sonic-creator/)
+[See the live site](http://padolsey.github.com/sonic-creator/)
