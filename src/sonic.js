@@ -14,8 +14,9 @@
 	var emptyFn = function(){};
 
 	function Sonic(d) {
-		this.convert = d.convert //New Code
-		this.background = d.background
+
+		this.converter = d.converter;
+
 		this.data = d.path || d.data;
 		this.imageData = [];
 
@@ -30,6 +31,7 @@
 
 		this.domClass = d.domClass || 'sonic';
 
+		this.backgroundColor = d.backgroundColor || 'rgba(0,0,0,0)';
 		this.fillColor = d.fillColor || '#FFF';
 		this.strokeColor = d.strokeColor || '#FFF';
 
@@ -200,18 +202,10 @@
 			}
 
 			this.frame = 0;
-			//this.prep(this.frame);
-			
-			//Here's The New Code
-			if(this.convert){
-				this.encoder = new GIFEncoder();
-				this.encoder.setRepeat(0);//loop forever
-				// http://www.stykz.net/support/help/lessons/About_the_Animated_GIF_Format.php
-				var delay = Math.max(60, 1000/this.fps);
-				this.encoder.setDelay(delay);//delay before next frame unfortunately there's a limit
-				this.encoder.start();
+
+			if (this.converter && this.converter.setup) {
+				this.converter.setup(this);
 			}
-			this.img = document.createElement("img")
 
 		},
 
@@ -222,11 +216,9 @@
 			}
 
 			this._.clearRect(0, 0, this.fullWidth, this.fullHeight);
-			if(this.convert){
-				this._.fillStyle = this.background;
-				this._.fillRect(0,0,this.fullWidth, this.fullHeight);
-			}
-			
+			this._.fillStyle = this.backgroundColor;
+			this._.fillRect(0, 0, this.fullWidth, this.fullHeight);
+
 			var points = this.points,
 				pointsLength = points.length,
 				pd = this.pointDistance,
@@ -282,7 +274,16 @@
 
 			}
 
-			this.iterateFrame();
+			if (this.converter && this.converter.step) {
+				this.converter.step(this);
+			}
+
+			if (!this.iterateFrame()) {
+				if (this.converter && this.converter.teardown) {
+					this.converter.teardown(this);
+					this.converter = null;
+				}
+			}
 
 		},
 
@@ -290,21 +291,12 @@
 			
 			this.frame += this.stepsPerFrame;
 			
-			//More code added
-			if(this.encoder){
-				this.encoder.addFrame(this._)
-			}
-			
 			if (this.frame >= this.points.length) {
 				this.frame = 0;
-				
-				//last bit of code added
-				if(this.encoder){
-					this.encoder.finish()
-					this.img.src = 'data:image/gif;base64,'+encode64(this.encoder.stream().getData())
-					this.encoder = null
-				}
+				return false;
 			}
+
+			return true;
 
 		},
 

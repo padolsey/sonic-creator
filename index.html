@@ -10,7 +10,9 @@
 		<script src="vendor/LZWEncoder.js"></script>
 		<script src="vendor/NeuQuant.js"></script>
 		<script src="vendor/GIFEncoder.js"></script>
-		<script src="vendor/sonic.js"></script>
+		<script src="src/sonic.js"></script>
+		<script src="src/SonicGIFConverter.js"></script>
+		<script src="src/SonicSpriteConverter.js"></script>
 	</head>
 	<body>
 
@@ -24,7 +26,7 @@
 	pointDistance: 0.02, // best between 0.01 and 0.05
 	fps: 20,
 
-	background: '#272822',
+	backgroundColor: '#272822',
 	fillColor: '#66D9EF',
 
 	path: [
@@ -69,15 +71,37 @@
 			<p>Adjusted to a maximum of ~16 FPS, as per <a target="_blank" href="http://www.stykz.net/support/help/lessons/About_the_Animated_GIF_Format.php">these guidelines</a>.</p>
 			<div id="gif"></div>
 			<p><small>Note: You'll probably want to compress that GIF.</small></p>
+			<h2>Sprite:</h2>
+			<div id="sprite"></div>
 		</div>
 
 		<script>
+
+		function CollectiveConverter() {
+			this.gif = new SonicGIFConverter;
+			this.sprite = new SonicSpriteConverter;
+		}
+
+		CollectiveConverter.prototype = {
+			setup: function(sonic) {
+				this.gif.setup(sonic);
+				this.sprite.setup(sonic);
+			},
+			step: function(sonic) {
+				this.gif.step(sonic);
+				this.sprite.step(sonic);
+			},
+			teardown: function(sonic) {
+				this.gif.teardown(sonic);
+				this.sprite.teardown(sonic);
+			}
+		};
 
 		(function() {
 
 			window.Sonic = (function(RealSonic) {
 				return function(conf) {
-					conf.convert = true;
+					conf.converter = new CollectiveConverter;
 					conf.background = conf.background || '#FFF';
 					// Save instance to local var
 					return sonic = new RealSonic(conf);
@@ -87,6 +111,7 @@
 			var sonic;
 			var sc = document.getElementById('sc');
 			var gif = document.getElementById('gif');
+			var sprite = document.getElementById('sprite');
 			var inputEditor = ace.edit('input');
 			inputEditor.setTheme('ace/theme/github');
 			inputEditor.setTheme("ace/theme/monokai");
@@ -102,6 +127,7 @@
 					sonic.stop();
 					sc.innerHTML = '';
 					gif.innerHTML = '';
+					sprite.innerHTML = '';
 					sonic = null;
 				}
 
@@ -117,7 +143,8 @@
 				};
 
 				sc.appendChild(sonic.canvas);	
-				gif.appendChild(sonic.img);
+				gif.appendChild(sonic.converter.gif.img);
+				sprite.appendChild(sonic.converter.sprite.img);
 				sonic.play();
 
 			}
