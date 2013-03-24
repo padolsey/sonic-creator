@@ -1,0 +1,51 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	font: .9em Helvetica, Arial, sans-serif;
+	background: #FFF url(load.gif) no-repeat center;
+	height: 100%;
+	overflow: hidden;
+}
+
+a {
+	font-weight: 700;
+}
+
+h1, h2 {
+	margin: 0;
+	padding: .4em;
+	margin: .6em 0 ;
+	background: #EEE;
+	border-bottom: 1px solid #DDD;
+}
+
+#editor, #preview {
+	background: #FFF;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	float: left;
+	margin: 0;
+	border: 3px solid #CCC;
+	width: 50%;
+	height: 100%;
+	overflow: auto;
+}
+
+img, canvas  {
+	box-shadow: 0 0 8px #CCC;
+	-moz-box-shadow: 0 0 8px #CCC;
+	-webkit-box-shadow: 0 0 8px #CCC;
+	-ms-box-shadow: 0 0 8px #CCC;
+}
+
+#input {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+#preview  {
+	padding: 20px;
+}

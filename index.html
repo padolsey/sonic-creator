@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+	<head>
+		<mata charset="utf-8"></mata>
+		<title>Sonic Creator - Create your own canvas/gif loader</title>
+		<link rel="stylesheet" href="main.css" />
+
+		<script src="vendor/ace/ace.js"></script>
+		<script src="vendor/b64.js"></script>
+		<script src="vendor/LZWEncoder.js"></script>
+		<script src="vendor/NeuQuant.js"></script>
+		<script src="vendor/GIFEncoder.js"></script>
+		<script src="vendor/sonic.js"></script>
+	</head>
+	<body>
+
+		<div id="editor"><div id="input">{
+			
+	width: 100,
+	height: 100,
+
+	stepsPerFrame: 3,		// best between 1 and 5
+	trailLength: .9,		 // between 0 and 1
+	pointDistance: .02,
+	fps: 20,
+
+	fillColor: '#FF5900',
+
+	path: [
+		['arc', 50, 50, 30, 0, 360]
+	],
+
+	step: function(point, index, frame) {
+
+		// Here you can do custom stuff.
+		// `this._` is a HTML 2d Canvas Context
+
+		var sizeMultiplier = 7; // try changing this :)
+        
+        // Add frame number in lower-left corner
+        this._.fillText(0|frame*this.fps, 1, 99);
+		
+		this._.beginPath();
+		this._.moveTo(point.x, point.y);
+		this._.arc(
+			point.x, point.y,
+			index * sizeMultiplier, 0,
+			Math.PI*2, false
+		);
+		this._.closePath();
+		this._.fill();
+
+	}
+
+}</div></div>
+
+		<div id="preview">
+			<h1>Sonic Creator</h1>
+			<p>With this tool you can create your own animated Sonic loader. Two graphics will appear below: one is an HTML5 Canvas running through <a target="_blank" href="https://github.com/padolsey/Sonic">Sonic</a>, the other is a regular GIF, generated via a modified version of <a target="_blank" href="https://github.com/cadc/SonicGIF">SonicGIF</a> (which utilises <a target="_blank" href="https://github.com/antimatter15/jsgif">jsgif</a>).</p>
+			<ul>
+				<li><a target="_blank" href="http://padolsey.net/p/Sonic/repo/demo/demo.html">Some examples &amp; inspiration here</a>
+				<li><a target="_blank" href="https://github.com/padolsey/Sonic/blob/master/README.md">Sonic Readme</a><br>
+			</ul>
+			<h2>Sonic Canvas</h2>
+			<div id="sc"></div>
+			<h2>Generated GIF:</h2>
+			<p>Limited to ~16 FPS, as per <a target="_blank" href="http://www.stykz.net/support/help/lessons/About_the_Animated_GIF_Format.php">these guidelines</a>.</p>
+			<div id="gif"></div>
+			<p><small>Note: You'll probably want to compress that GIF.</small></p>
+		</div>
+
+		<script>
+
+		(function() {
+
+			var sonic;
+			var sc = document.getElementById('sc');
+			var gif = document.getElementById('gif');
+			var inputEditor = ace.edit('input');
+			inputEditor.setTheme('ace/theme/github');
+			var inputSession = inputEditor.getSession();
+			inputSession.setMode("ace/mode/javascript");
+			inputSession.on('change', debounce(update, 400));
+
+			update();
+
+			function update() {
+
+				if (sonic) {
+					sonic.stop();
+					sc.innerHTML = '';
+					gif.innerHTML = '';
+				}
+
+				var conf = eval('(' + inputSession.getValue() + ')');
+				conf.convert = true;
+				conf.background = conf.background || '#FFF';
+				sonic = new Sonic(conf);
+
+				sc.appendChild(sonic.canvas);	
+				gif.appendChild(sonic.img);
+				sonic.play();
+
+			}
+			function debounce(func, wait, immediate) {
+				var t, result;
+				return function() {
+					var context = this, args = arguments;
+					var later = function() {
+						t = null;
+						if (!immediate) result = func.apply(context, args);
+					};
+					var callNow = immediate && !t;
+					clearTimeout(t);
+					t = setTimeout(later, wait);
+					if (callNow) result = func.apply(context, args);
+					return result;
+				};
+			}
+
+		}());
+
+		</script>
+
+	</body>
+</html>
