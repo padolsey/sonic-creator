@@ -29,10 +29,6 @@ h1 { margin-top: 0; }
 
 #editor, #preview {
 	background: #272822;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
 	float: left;
 	margin: 0;
 	border: 3px solid #2f3129;
@@ -41,16 +37,51 @@ h1 { margin-top: 0; }
 	overflow: auto;
 }
 
-img, canvas  {
+.ibox, #editor, #preview {
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+}
+
+.ibox {
+	width: 50%;
+	float: left;
+	padding-bottom: 1.5em;
+}
+
+.bbox {
+	clear: both;
+}
+
+img, canvas {
 	outline: 1px solid #A6E22E;
 	border: 1px solid #272822;
+}
+
+#gif img, #sc canvas  {
 	min-width: 50px;
 	min-height: 50px;
 }
 
-#sprite {
-	overflow: auto;
-	width: 100%;
+#sprite img {
+	max-width: 100%;
+	height: auto;
+}
+
+#gallery {
+	overflow: hidden;
+}
+
+#gallery img {
+	width: 50px;
+	height: 50px;
+}
+
+#gallery a {
+	float: left;
+	margin-right: 4px;
+	padding: 4px;
 }
 
 canvas {

@@ -7,18 +7,14 @@ function SonicSpriteConverter() {
 SonicSpriteConverter.prototype = {
 	setup: function(sonic) {
 		this.f = 0;
-		this.canvas.width = sonic.canvas.width * sonic.points.length
+		var width = sonic.canvas.width * Math.ceil(sonic.points.length / sonic.stepsPerFrame);
+		this.canvas.width = width;
 		this.canvas.height = sonic.canvas.height;
 	},
 	step: function(sonic) {
 		this._.drawImage(sonic.canvas, this.f++ * sonic.fullWidth, 0);
 	},
 	teardown: function(sonic) {
-		// Buffer, grab img with correct width
-		var c = document.createElement('canvas');
-		c.width = this.f * sonic.fullWidth;
-		c.height = sonic.fullHeight;
-		c.getContext('2d').drawImage(this.canvas, 0, 0);
-		this.img.src = c.toDataURL();
+		this.img.src = this.canvas.toDataURL();
 	}
 };

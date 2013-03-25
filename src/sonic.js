@@ -32,8 +32,8 @@
 		this.domClass = d.domClass || 'sonic';
 
 		this.backgroundColor = d.backgroundColor || 'rgba(0,0,0,0)';
-		this.fillColor = d.fillColor || '#FFF';
-		this.strokeColor = d.strokeColor || '#FFF';
+		this.fillColor = d.fillColor;
+		this.strokeColor = d.strokeColor;
 
 		this.stepMethod = typeof d.step == 'string' ?
 			stepMethods[d.step] :
@@ -240,8 +240,12 @@
 
 				this._.globalAlpha = this.alpha;
 
-				this._.fillStyle = this.fillColor;
-				this._.strokeStyle = this.strokeColor;
+				if (this.fillColor) {
+					this._.fillStyle = this.fillColor;
+				}
+				if (this.strokeColor) {
+					this._.strokeStyle = this.strokeColor;
+				}
 
 				frameD = frame/(this.points.length-1);
 				indexD = i/(l-1);
