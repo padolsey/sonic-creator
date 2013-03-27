@@ -17,7 +17,7 @@ SonicSpriteConverter.CSS3_TEMPLATE = '@-webkit-keyframes loaderSprite {\n\
 .loader {\n\
     width: %widthpx;\n\
     height: %heightpx;\n\
-    background-image: url("path/to/the/sprite.png");\n\
+    background-image: url("PNG_URI_GOES_HERE");\n\
     -webkit-animation: loaderSprite 1s steps(%frames, end) infinite;\n\
     -moz-animation: loaderSprite 1s steps(%frames, end) infinite;\n\
     animation: loaderSprite 1s steps(%frames, end) infinite;\n\

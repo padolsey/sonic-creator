@@ -2,5 +2,7 @@ var galleryManifest = [
 	'default',
 	'orbit',
 	'pink',
-	'numbers'
+	'numbers',
+	'snake',
+	'flame'
 ];

@@ -92,11 +92,24 @@
 	};
 
 	viewCSS3Button.onclick = function() {
-		var w = window.open('about:blank', '', 'width=500,height=430,location=no');
+		var w = window.open('about:blank', '', 'width=500,height=500,location=no');
 		w.document.body.style.whiteSpace = 'pre';
-		w.document.body.style.font = '.8em "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace';
+		w.document.body.style.font = '';
 		w.document.title = 'CSS3 Sonic Sprite';
-		w.document.body.innerHTML = activeConverter.sprite.css3;
+		w.document.write(
+			'<style>' + 
+				activeConverter.sprite.css3.replace(
+					'PNG_URI_GOES_HERE',
+					activeConverter.sprite.img.src
+				) +
+				'body{' +
+					'white-space: pre;' +
+					'font: .8em "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace;' +
+				'}' +
+			'</style>' +
+			'<div class="loader"></div><br>' +
+			activeConverter.sprite.css3
+		);
 	};
 
 	function update() {
