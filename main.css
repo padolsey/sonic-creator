@@ -2,7 +2,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 	font: .9em Helvetica, Arial, sans-serif;
-	background: #272822 url(load.gif) no-repeat center;
+	background: #272822;
 	color: #FFF;
 	height: 100%;
 	overflow: hidden;

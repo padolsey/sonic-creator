@@ -1,5 +1,3 @@
-var NUMBERS = '0123456789';
-
 new Sonic({
 
 	width: 100,
@@ -24,7 +22,7 @@ new Sonic({
 
 	step: function(point, index, frame) { 
 		this._.fillText(
-			NUMBERS.charAt(0 | frame * 10),
+			0 | frame * 10,
 			point.x - 30,
 			point.y + 25
 		);
