@@ -37,6 +37,10 @@ h1 { margin-top: 0; }
 	overflow: auto;
 }
 
+#view-css3 {
+	display: none;
+}
+
 .ibox, #editor, #preview {
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;

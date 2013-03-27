@@ -33,9 +33,10 @@
 		gallery.load(window.location.hash.replace(/^#/, ''));
 	};
 
-	function CollectiveConverter() {
+	function CollectiveConverter(cb) {
 		this.gif = new SonicGIFConverter;
 		this.sprite = new SonicSpriteConverter;
+		this.cb = cb;
 	}
 
 	CollectiveConverter.prototype = {
@@ -50,12 +51,15 @@
 		teardown: function(sonic) {
 			this.gif.teardown(sonic);
 			this.sprite.teardown(sonic);
+			this.cb();
 		}
 	};
 
+	var activeConverter;
+
 	window.Sonic = (function(RealSonic) {
 		return function(conf) {
-			conf.converter = new CollectiveConverter;
+			activeConverter = conf.converter = new CollectiveConverter(onConversion);
 			conf.background = conf.background || '#FFF';
 			// Save instance to local var
 			return sonic = new RealSonic(conf);
@@ -66,6 +70,7 @@
 	var sc = document.getElementById('sc');
 	var gif = document.getElementById('gif');
 	var sprite = document.getElementById('sprite');
+	var viewCSS3Button = document.getElementById('view-css3');
 
 	var inputEditor = ace.edit('input');
 	inputEditor.setTheme("ace/theme/monokai");
@@ -84,6 +89,14 @@
 				return confirm('Are you sure? (you have made changes!)');
 			}
 		}
+	};
+
+	viewCSS3Button.onclick = function() {
+		var w = window.open('about:blank', '', 'width=500,height=430,location=no');
+		w.document.body.style.whiteSpace = 'pre';
+		w.document.body.style.font = '.8em "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace';
+		w.document.title = 'CSS3 Sonic Sprite';
+		w.document.body.innerHTML = activeConverter.sprite.css3;
 	};
 
 	function update() {
@@ -108,21 +121,25 @@
 		};
 
 		sc.appendChild(sonic.canvas);	
-		gif.appendChild(sonic.converter.gif.img);
+		sonic.play();
+
+	}
+
+	function onConversion() {
+		viewCSS3Button.style.display = 'block';
+
+		gif.appendChild(activeConverter.gif.img);
 
 		var spriteAnchor = sprite.appendChild(
 			document.createElement('a')
 		);
 
-		
-		var spriteImg = spriteAnchor.appendChild(sonic.converter.sprite.img);
+		var spriteImg = spriteAnchor.appendChild(activeConverter.sprite.img);
 
 		spriteAnchor.onclick = function() {
 			spriteAnchor.href = spriteImg.src;
 		};
 		spriteAnchor.target = '_blank';
-		sonic.play();
-
 	}
 
 	function debounce(func, wait, immediate) {
