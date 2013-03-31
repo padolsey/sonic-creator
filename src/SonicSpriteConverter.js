@@ -18,9 +18,9 @@ SonicSpriteConverter.CSS3_TEMPLATE = '@-webkit-keyframes loaderSprite {\n\
     width: %widthpx;\n\
     height: %heightpx;\n\
     background-image: url("PNG_URI_GOES_HERE");\n\
-    -webkit-animation: loaderSprite 1s steps(%frames, end) infinite;\n\
-    -moz-animation: loaderSprite 1s steps(%frames, end) infinite;\n\
-    animation: loaderSprite 1s steps(%frames, end) infinite;\n\
+    -webkit-animation: loaderSprite %duration steps(%frames, end) infinite;\n\
+    -moz-animation: loaderSprite %duration steps(%frames, end) infinite;\n\
+    animation: loaderSprite %duration steps(%frames, end) infinite;\n\
 }\n';
 
 function SonicSpriteConverter() {
@@ -45,6 +45,7 @@ SonicSpriteConverter.prototype = {
 			.replace(/%height/g, sonic.canvas.height)
 			.replace(/%width/g, sonic.canvas.width)
 			.replace(/%totalWidth/g, this.canvas.width)
-			.replace(/%frames/g, this.f);
+			.replace(/%frames/g, this.f)
+			.replace(/%duration/g, this.f / sonic.fps + 's');
 	}
 };

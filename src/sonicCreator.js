@@ -18,6 +18,8 @@
 			xhr.open('GET', 'gallery/' + name + '.js', false);
 			xhr.send(null);
 			inputSession.setValue(loadedViaGallery = xhr.responseText);
+			update.prevValue = null;
+			update();
 		},
 		generateHTML: function() {
 			var html = [];
@@ -73,7 +75,9 @@
 	var viewCSS3Button = document.getElementById('view-css3');
 
 	var inputEditor = ace.edit('input');
+
 	inputEditor.setTheme("ace/theme/monokai");
+
 	inputEditor.setShowPrintMargin(false);
 
 	var inputSession = inputEditor.getSession();
@@ -114,6 +118,18 @@
 
 	function update() {
 
+		var val = inputSession.getValue();
+
+		if (val === update.prevValue) {
+			return;
+		}
+
+		update.prevValue = val;
+
+		if (loadedViaGallery !== val) {
+			window.location.hash = '';
+		}
+
 		if (sonic) {
 			sonic.stop();
 			sc.innerHTML = '';
@@ -122,7 +138,9 @@
 			sonic = null;
 		}
 
-		eval(inputSession.getValue());
+		viewCSS3Button.style.display = '';
+
+		eval(val);
 
 		if (!sonic) {
 			throw new Error('Invalid input, no Sonic instance produced.');

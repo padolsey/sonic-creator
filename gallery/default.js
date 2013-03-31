@@ -3,9 +3,9 @@ new Sonic({
 	width: 100,
 	height: 100,
 
-	stepsPerFrame: 3,    // best between 1 and 5
+	stepsPerFrame: 6,    // best between 1 and 5
 	trailLength: 0.9,    // between 0 and 1
-	pointDistance: 0.02, // best between 0.01 and 0.05
+	pointDistance: 0.01, // best between 0.01 and 0.05
 	fps: 20,
 
 	backgroundColor: '#272822',

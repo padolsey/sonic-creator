@@ -3,7 +3,7 @@ new Sonic({
 	width: 100,
 	height: 100,
 
-	stepsPerFrame: 3,
+	stepsPerFrame: 5,
 	trailLength: 0.8,
 	pointDistance: 0.007,
 	fps: 20,
@@ -12,7 +12,7 @@ new Sonic({
 	fillColor: '#FFF',
 
 	path: [
-		['arc', 50, 50, 30, 0, 360*2]
+		['arc', 50, 50, 30, 0, 360]
 	],
 
 	step: function(point, index, frame) {
