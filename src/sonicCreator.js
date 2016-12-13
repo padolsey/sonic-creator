@@ -38,6 +38,7 @@
 	function CollectiveConverter(cb) {
 		this.gif = new SonicGIFConverter;
 		this.sprite = new SonicSpriteConverter;
+		this.rotatingPNG = new SonicRotatingPNGConverter;
 		this.cb = cb;
 	}
 
@@ -45,14 +46,17 @@
 		setup: function(sonic) {
 			this.gif.setup(sonic);
 			this.sprite.setup(sonic);
+			this.rotatingPNG.setup(sonic);
 		},
 		step: function(sonic) {
 			this.gif.step(sonic);
 			this.sprite.step(sonic);
+			this.rotatingPNG.step(sonic);
 		},
 		teardown: function(sonic) {
 			this.gif.teardown(sonic);
 			this.sprite.teardown(sonic);
+			this.rotatingPNG.teardown(sonic);
 			this.cb();
 		}
 	};
@@ -73,6 +77,7 @@
 	var gif = document.getElementById('gif');
 	var sprite = document.getElementById('sprite');
 	var viewCSS3Button = document.getElementById('view-css3');
+	var viewCSS3RotateButton = document.getElementById('view-css3-rotate');
 
 	var inputEditor = ace.edit('input');
 
@@ -116,6 +121,27 @@
 		);
 	};
 
+    viewCSS3RotateButton.onclick = function() {
+		var w = window.open('about:blank', '', 'width=500,height=500,location=no');
+		w.document.body.style.whiteSpace = 'pre';
+		w.document.body.style.font = '';
+		w.document.title = 'CSS3 Rotating Sonic';
+		w.document.write(
+			'<style>' +
+				activeConverter.rotatingPNG.css3.replace(
+					'PNG_URI_GOES_HERE',
+					activeConverter.rotatingPNG.img.src
+				) +
+				'body{' +
+					'white-space: pre;' +
+					'font: .8em "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace;' +
+				'}' +
+			'</style>' +
+			'<div class="loader"></div><br>' +
+			activeConverter.rotatingPNG.css3
+		);
+	};
+
 	function update() {
 
 		var val = inputSession.getValue();
@@ -139,6 +165,7 @@
 		}
 
 		viewCSS3Button.style.display = '';
+		viewCSS3RotateButton.style.display = '';
 
 		eval(val);
 
@@ -158,6 +185,7 @@
 
 	function onConversion() {
 		viewCSS3Button.style.display = 'block';
+		viewCSS3RotateButton.style.display = 'block';
 
 		gif.appendChild(activeConverter.gif.img);
 
