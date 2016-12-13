@@ -13,6 +13,7 @@
 		<script src="src/sonic.js"></script>
 		<script src="src/SonicGIFConverter.js"></script>
 		<script src="src/SonicSpriteConverter.js"></script>
+		<script src="src/SonicRotatingPNGConverter.js"></script>
 		<script src="gallery/manifest.js"></script>
 	</head>
 	<body>
@@ -37,6 +38,14 @@
 				<h2>PNG Sprite:</h2>
 				<div id="sprite"></div>
 				<p><button id="view-css3">View the CSS3 to run this sprite</button></p>
+			</div>
+			<div class="bbox">
+				<h2>PNG Rotating version:</h2>
+				<p>If your loader is a perfect square and doesn't change during rotation you can use this alternate CSS3 version which simply rotate the first frame</p>
+				<p>Note: this mode is best used with transparent background color (rgba(0,0,0,0))</p>
+				<!-- not preview for this one as it requires square loader (does not fit all use cases) -->
+				<!--<div id="rotation"></div>-->
+				<p><button id="view-css3-rotate">View the CSS3 to run this rotating version</button></p>
 			</div>
 			<div class="bbox">
 				<h2>Gallery:</h2>
